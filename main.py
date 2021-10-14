@@ -8,11 +8,16 @@ from scr.model.model import Jasper
 from scr.precessing.wav2spec import Featurizer
 from collections import defaultdict
 from scr.logger.logger import AverageMeter, Timer
-import tqdm
+from tqdm import tqdm
 from scr.metrics.metrics import calculate_cer
 
 
-def train(train_dataloader):
+def train(ds):
+    train_dataloader = DataLoader(
+        ds, batch_size=20,
+        shuffle=False, collate_fn=Collator(),
+        # num_workers=2,
+        pin_memory=True)
     NUM_EPOCH = 20
     history = defaultdict(list)
     DEVICE = torch.device('cuda')
@@ -83,13 +88,7 @@ def print_hi(name):
     path_to_csv = '/content/cv-corpus-7.0-2021-07-21/ru/train.tsv'
     ds = AudioMnistDataset(Main_path, path_to_csv)
 
-    train_dataloader = DataLoader(
-        ds, batch_size=20,
-        shuffle=False, collate_fn=Collator(),
-        # num_workers=2,
-        pin_memory=True
-    )
-    train(train_dataloader)
+    train(ds)
 
 
 # Press the green button in the gutter to run the script.
