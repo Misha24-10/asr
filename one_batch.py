@@ -13,6 +13,7 @@ from scr.metrics.metrics import calculate_cer
 import wandb
 
 def train(ds):
+    wandb.login(key='358c4114387c5c7ca207c32ba4343e7c86efc182')
     wandb.init(project='asr', entity='mishaya') # username in wandb
     config = wandb.config          # Initialize config
     config.batch_size = 20
