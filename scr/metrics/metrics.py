@@ -1,6 +1,7 @@
 import editdistance
 from scr.decoder.char_text_encoder import Alphabet
 from scr.decoder.ctc_decode import ctc_decode
+from scr.configs.config import numper_exmapes_to_print
 
 def calc_wer(target_text: str, pred_text: str):
     targ_split = target_text.split()
@@ -26,7 +27,7 @@ def calculate_cer(targets, decodings, y_lengths, x_lengths):
     """
     Calculate the Levenshtein distance between predictions and GT
     """
-    numper_exmapes = 3
+    numper_exmapes = numper_exmapes_to_print
     alph = Alphabet()
     cer = 0.0
     wer = 0.0
@@ -52,6 +53,30 @@ def calculate_cer(targets, decodings, y_lengths, x_lengths):
 
     for tar, pred in zip(targets,decodings):
         print("\nTrue: ",alph.int2char(tar),"\n","Predic: ",ctc_decode(pred))
+        numper_exmapes = numper_exmapes - 1
+        if (numper_exmapes == 0):
+            break
+    return cer / len(targets), wer / len(targets), pairs
+
+def calculate_cer_beam(targets,decodings,y_lengths):
+    """
+    Calculate the Levenshtein distance between predictions and GT
+    """
+    numper_exmapes = numper_exmapes_to_print
+    alph = Alphabet()
+    cer = 0.0
+    wer = 0.0
+    targets = targets.detach().tolist()
+    for i, target in enumerate(targets):
+        targets[i] = target[:y_lengths[i]]
+    pairs = ""
+    for target, d in zip(targets, decodings):
+        target = alph.int2char(target)
+        cer += calc_cer(target, d)
+        wer += calc_wer(target, d)
+
+    for tar, pred in zip(targets,decodings):
+        pairs = "True: "+ alph.int2char(tar) +" -- "+"Predic: " + pred
         numper_exmapes = numper_exmapes - 1
         if (numper_exmapes == 0):
             break
