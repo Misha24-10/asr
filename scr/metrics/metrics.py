@@ -6,7 +6,7 @@ def calc_wer(target_text: str, pred_text: str):
     targ_split = target_text.split()
     pred_split = pred_text.split()
     if len(targ_split) == 0 and len(pred_split) != 0:
-        return 0
+        return 1.0
     if len(targ_split) == 0 and len(pred_split) == 0:
         return 0
     error = editdistance.eval(targ_split, pred_split)
@@ -14,8 +14,10 @@ def calc_wer(target_text: str, pred_text: str):
 
 
 def calc_cer(target_text: str, pred_text: str):
-    if (target_text == 0 and pred_text != 0):
+    if (len(target_text) == 0 and len(pred_text) != 0):
         return 1.0
+    if len(target_text) == 0 and len(pred_text) == 0:
+        return 0
     error = editdistance.eval(target_text, pred_text)
     return error / len(target_text)
 

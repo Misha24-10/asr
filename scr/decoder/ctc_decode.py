@@ -14,9 +14,11 @@ def ctc_decode(inds):
             processed_text += value
         if (i == 0 and value != ''):
             processed_text += value
-    processed_text = processed_text.replace('^', '')  # delete empty tokens from strings
+    processed_text = processed_text.replace('^', '') # delete empty tokens from strings
     if processed_text == "":
         return ""
-    if processed_text[0] == " ":
+    if processed_text[0] == " " :
         processed_text = processed_text[1:]
     return processed_text
+
+assert ctc_decode([11, 1, 13, 28, 8, 32, 11, 9, 33, 33]) == 'камызяки '
