@@ -15,7 +15,7 @@ from scr.configs.config import test_batch_size, num_iter_in_epoch_test,main_path
 import wandb
 def test(ds, model_weights):
     wandb.login(key='358c4114387c5c7ca207c32ba4343e7c86efc182')
-    wandb.init(project='QUARTZNET_voice', entity='mishaya') # username in wandb
+    wandb.init(project='test_common_voice', entity='mishaya') # username in wandb
     config = wandb.config
     test_dataloader = DataLoader(
         ds, batch_size=test_batch_size,
@@ -51,8 +51,8 @@ def test(ds, model_weights):
             history['cer'].append(val_average_cer.avg)
             history['wer'].append(val_average_wer.avg)
             wandb.log({
-                "val_cer": val_average_cer,
-                "val_wer": val_average_wer})
+                "val_cer": val_cer,
+                "val_wer": val_wer})
         print("Vall cer (argmax)=", val_cer)
         print("Vall wer (argmax) =", val_wer)
     fig, axes = plt.subplots(1, 2, figsize=(20, 10))
