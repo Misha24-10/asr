@@ -17,7 +17,6 @@ from scr.model.quartznet import Quartznet
 import torch_optimizer as optim
 from scr.decoder.beam_search import *
 
-
 def test(ds, model_weights):
     test_dataloader = DataLoader(
         ds, batch_size=20,

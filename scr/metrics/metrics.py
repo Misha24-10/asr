@@ -26,12 +26,15 @@ def calculate_cer(targets, decodings, y_lengths, x_lengths):
     """
     Calculate the Levenshtein distance between predictions and GT
     """
+    numper_exmapes = 3
     alph = Alphabet()
     cer = 0.0
     wer = 0.0
     targets = targets.detach().tolist()
 
     decodings = decodings.detach().tolist()
+
+
 
     for i, target in enumerate(targets):
         targets[i] = target[:y_lengths[i]]
@@ -47,6 +50,9 @@ def calculate_cer(targets, decodings, y_lengths, x_lengths):
         cer += calc_cer(target, decoding)
         wer += calc_wer(target, decoding)
 
-    for tar, pred in zip(targets, decodings):
-        print(alph.int2char(tar), "-----", ctc_decode(pred))
+    for tar, pred in zip(targets,decodings):
+        print("\nTrue: ",alph.int2char(tar),"\n","Predic: ",ctc_decode(pred))
+        numper_exmapes = numper_exmapes - 1
+        if (numper_exmapes == 0):
+            break
     return cer / len(targets), wer / len(targets), pairs
