@@ -10,7 +10,6 @@ from collections import defaultdict
 import torch.nn.functional as F
 from itertools import islice
 from scr.model.quartznet import Quartznet
-import torch_optimizer as optim
 from scr.decoder.beam_search import *
 from scr.configs.config import test_batch_size, num_iter_in_epoch_test,main_path_to_dataset_common_voice, path_to_csv_test_dataset, model_weights
 import wandb
