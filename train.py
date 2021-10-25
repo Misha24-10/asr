@@ -26,12 +26,12 @@ def train(train_dataset, valid_dataset, model_weights = None):
     config.opt_betas = opt_betas
     config.opt_weight_decay = opt_weight_decay
     config.log_interval = 1     # how many batches to wait before logging training status
+
     train_dataloader = DataLoader(
-        train_dataset, batch_size=train_dataset,
+        train_dataset, batch_size=train_batch_size,
         shuffle=True, collate_fn=Collator_transforms(),
         num_workers=2, pin_memory=True, drop_last=True
     )
-
     validation_dataloader = DataLoader(
     valid_dataset, batch_size=valid_batch_size, shuffle=True,
     collate_fn=Collator(),
@@ -44,7 +44,6 @@ def train(train_dataset, valid_dataset, model_weights = None):
     criterion = nn.CTCLoss(blank=0).to(DEVICE)  # balnk ^ == 0 index
     optimizer = optim.NovoGrad(model.parameters(), lr=opt_learning_rate,betas=opt_betas,weight_decay=opt_weight_decay)
     history = defaultdict(list)
-    model.eval()
     for epoch in range(number_epoch):
         average_cer = AverageMeter()
         average_wer = AverageMeter()

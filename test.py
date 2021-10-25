@@ -51,6 +51,9 @@ def test(ds, model_weights):
             validation_loss_meter.update(val_loss.item())
             history['cer'].append(val_average_cer.avg)
             history['wer'].append(val_average_wer.avg)
+            wandb.log({
+                "val_cer": val_average_cer,
+                "val_wer": val_average_wer})
         print("Vall cer (argmax)=", val_cer)
         print("Vall wer (argmax) =", val_wer)
     fig, axes = plt.subplots(1, 2, figsize=(20, 10))
