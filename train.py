@@ -12,7 +12,7 @@ from itertools import islice
 from scr.model.quartznet import Quartznet
 import torch_optimizer as optim
 from scr.decoder.beam_search import *
-from scr.configs.config import num_iter_in_epoch_train,num_iter_in_epoch_valid,norm_clap, opt_learning_rate, opt_betas,opt_weight_decay ,main_path_to_dataset_common_voice, path_to_csv_test_dataset, model_weights, path_to_csv_train_dataset, path_to_csv_valid_dataset, train_batch_size, valid_batch_size,number_epoch
+from scr.configs.config import num_iter_in_epoch_train,num_iter_in_epoch_valid,norm_clap, opt_learning_rate, opt_betas,opt_weight_decay ,main_path_to_dataset_common_voice, path_to_csv_test_dataset, model_weights, path_to_csv_train_dataset, path_to_csv_valid_dataset, train_batch_size, valid_batch_size,number_epoch, isAdam, adam_learning_rate, adam_betas
 from scr.precessing.wav2spec import transforms
 from scr.collator.collator import Collator_transforms
 import wandb
@@ -42,7 +42,10 @@ def train(train_dataset, valid_dataset, model_weights = None):
     if model_weights:
         model.load_state_dict(torch.load(model_weights))
     criterion = nn.CTCLoss(blank=0).to(DEVICE)  # balnk ^ == 0 index
-    optimizer = optim.NovoGrad(model.parameters(), lr=opt_learning_rate,betas=opt_betas,weight_decay=opt_weight_decay)
+    if (isAdam):
+        optimizer = torch.optim.Adam(model.parameters(), lr=adam_learning_rate, betas=adam_betas,)
+    else:
+        optimizer = optim.NovoGrad(model.parameters(), lr=opt_learning_rate,betas=opt_betas,weight_decay=opt_weight_decay)
     history = defaultdict(list)
     for epoch in range(number_epoch):
         average_cer = AverageMeter()

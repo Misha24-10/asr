@@ -16,3 +16,4 @@ matplotlib
 torchaudio_augmentations
 torch-optimizer
 fast_ctc_decode
+gdown

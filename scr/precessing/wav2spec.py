@@ -6,11 +6,11 @@ from torchaudio_augmentations import *
 from matplotlib import pyplot as plt
 
 transforms = [
-    RandomApply([Noise(min_snr=0.05, max_snr=0.3)], p=0.15), # add noise in audio
-    RandomApply([PolarityInversion()], p=0.15), #elements negative->positive, posetive->negative out=−1×input https://www.hackaudio.com/digital-signal-processing/amplitude/gain-change/polarity-inversion/
-    RandomApply([Gain(min_gain=-20, max_gain=-1)], p=0.12), #decrease volume
-    RandomApply([Gain(min_gain=-1, max_gain=25)], p=0.12), #increase volume
-    RandomApply([Reverb(sample_rate=8000)], p=0.12) #echo like in room
+    RandomApply([Noise(min_snr=0.05, max_snr=0.3)], p=0.1), # add noise in audio
+    RandomApply([PolarityInversion()], p=0.1), #elements negative->positive, posetive->negative out=−1×input https://www.hackaudio.com/digital-signal-processing/amplitude/gain-change/polarity-inversion/
+    RandomApply([Gain(min_gain=-20, max_gain=-1)], p=0.1), #decrease volume
+    RandomApply([Gain(min_gain=-1, max_gain=25)], p=0.1), #increase volume
+    RandomApply([Reverb(sample_rate=8000)], p=0.1) #echo like in room
 ]
 
 
@@ -33,8 +33,8 @@ class Featurizer(nn.Module):
 
         self.featurizer_trans = nn.Sequential(
             self.featurizer,
-            torchaudio.transforms.TimeMasking(time_mask_param=10),
-            torchaudio.transforms.FrequencyMasking(freq_mask_param=6))
+            torchaudio.transforms.TimeMasking(time_mask_param=5),
+            torchaudio.transforms.FrequencyMasking(freq_mask_param=5))
 
     def forward(self, x, transforms=None):
 

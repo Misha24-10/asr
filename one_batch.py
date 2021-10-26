@@ -4,7 +4,7 @@ from torch.utils.data import Dataset, DataLoader
 from scr.collator.collator import Collator
 import torch
 from torch import nn
-from scr.model.model import Jasper
+from scr.model.jasper import Jasper
 from scr.precessing.wav2spec import Featurizer
 from collections import defaultdict
 from scr.logger.logger import AverageMeter, Timer
